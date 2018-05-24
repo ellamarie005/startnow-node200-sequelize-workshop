@@ -1,15 +1,16 @@
-const express = require('express');
+const db = require("../db/models"); // initial sequelize model
+const express = require("express");
 const router = express.Router();
-const Author = require('../db/models/author');
+
 
 router.get('/', (req, res) => {
-  Author
+  db.Author
     .findAll()
     .then(authors => { res.status(200).json(authors) })
 });
 
 router.get('/:id', (req, res) => {
-  Author
+  db.Author
     .findByID(req.params.id)
     .then(authors => {
       if (authors) return res.status(200).json(authors);
@@ -18,7 +19,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/:id/blogs', (req, res) => {
-  Author
+  db.Author
     .findAll({ where: { authorId: req.params.id } })
     .then()
     .catch(console.error)
@@ -26,7 +27,7 @@ router.get('/:id/blogs', (req, res) => {
 
 router.post('/', (req, res) => {
   let author = new Author(req.body);
-  Author
+  db.Author
     .create(err => {
       if (err) { return res.status(404).send(err) }
       else { return res.status(201).json(author) }
@@ -35,14 +36,14 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  Author
+  db.Author
     .update(req.params.id)
     .then(() => console.log('Updated the author!'))
     .catch(console.error);
 });
 
 router.delete('/:id', (req, res) => {
-  Author
+  db.Author
     .findById(req.params.id)
     .then(author => {
       return author.destroy();
