@@ -10,8 +10,10 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-    res.status(200).send();
-});
+app.use('/api/authors', require('./routes/authors'));
+app.use('/api/blogs', require('./routes/blogs'));
 
+app.get('/', (req, res) => {
+    res.status(200).send('YO YO YOOOOO!');
+});
 module.exports = app;
