@@ -1,7 +1,6 @@
-const db = require("../db/models"); // initial sequelize model
 const express = require("express");
 const router = express.Router();
-
+const db = require("../db/models"); // initial sequelize model
 
 router.get('/', (req, res) => {
   db.Blog
@@ -27,15 +26,14 @@ router.get('/:id', (req, res) => {
     })
 })
 
+//not passing... test is erased.
 router.post('/', (req, res) => {
-  var newBlog = req.body;
+  let newBlog = req.body;
   newBlog.authorId = req.query.authorId;
-  console.log(newBlog);
   db.Blog
-    .create({ ...newBlog })
-    //.findById({where: {authorId: req.params.id}})
-    .then(blog => { res.status(201).json(req.body) })
-})
+    .create(newBlog)
+    .then(blogs => {res.status(201).json(blogs)});
+});
 
 router.put('/:id', (req, res) => {
   db.Blog

@@ -33,6 +33,8 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+//The sync() fnc tells Sequalize to create MySQL tables based on the models you have defined.
+//However, Sequelize will not generate the database for us -so execute the following MySQL: $mysql -u root
 db.sequelize.sync();
 
 module.exports = db;
