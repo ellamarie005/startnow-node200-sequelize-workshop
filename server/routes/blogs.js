@@ -26,7 +26,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
-//not passing... test is erased.
+//this is finally passing!
 router.post('/', (req, res) => {
   let newBlog = req.body;
   newBlog.authorId = req.query.authorId;
