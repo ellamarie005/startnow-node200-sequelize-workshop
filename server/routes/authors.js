@@ -2,55 +2,48 @@ const db = require("../db/models"); // initial sequelize model
 const express = require("express");
 const router = express.Router();
 
-
+//passed
 router.get('/', (req, res) => {
   db.Author
     .findAll()
     .then(authors => { res.status(200).json(authors) })
 });
 
+//passed
 router.get('/:id', (req, res) => {
   db.Author
-    .findByID(req.params.id)
-    .then(authors => {
-      if (authors) return res.status(200).json(authors);
-      else return res.status(404).send('Author does not exist')
+    .findById(req.params.id)
+    .then(author => { 
+      if (author) {res.status(200).json(author)}
+      else {res.status(404).send('Author does not exist!')}
     })
 });
 
+
 router.get('/:id/blogs', (req, res) => {
-  db.Author
+  db.Blog
     .findAll({ where: { authorId: req.params.id } })
-    .then()
-    .catch(console.error)
+    .then(blogs => {res.status(200).json(blogs)})
 });
 
 router.post('/', (req, res) => {
-  let author = new Author(req.body);
   db.Author
-    .create(err => {
-      if (err) { return res.status(404).send(err) }
-      else { return res.status(201).json(author) }
-    })
-    .catch(console.error)
+    .create(req.body)
+    .then(user => {res.status(201).json(user)})
 });
 
 router.put('/:id', (req, res) => {
   db.Author
-    .update(req.params.id)
-    .then(() => console.log('Updated the author!'))
-    .catch(console.error);
+    .update(req.body,{where: {id: req.params.id}})
+    .then(author => {res.status(204).json(author)})
 });
 
 router.delete('/:id', (req, res) => {
-  db.Author
-    .findById(req.params.id)
-    .then(author => {
-      return author.destroy();
-    })
-    .then(() => console.log('Car deleted'))
-    .catch(console.error);
-
+  if (req.params.id) {
+   db
+   .Author
+   .destroy({where: {id: req.params.id}})
+   .then(res.status(200).send('Author is now deleted'))}
 });
 
 module.exports = router;
